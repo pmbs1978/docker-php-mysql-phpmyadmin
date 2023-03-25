@@ -46,7 +46,7 @@ services:
     ports:
       - '8503:80'
     environment:
-      PMA_HOST: php-mysql-phpadmin-mysql-1
+      PMA_HOST: pmbs-example-mysql-1
     links: 
       - 'mysql'
 
