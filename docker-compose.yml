@@ -1,0 +1,56 @@
+version: '3.9'
+name: pmbs-example
+services:
+  php:
+    # build the image
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    image: pmbs-php-apache
+    # end of build the image
+    # use repository image
+    # image: php:apache
+    ports:
+      - '8502:80'
+    volumes:
+      - './:/var/www/html'
+  
+  mysql:
+    # build the image
+    build:
+      context: .
+      dockerfile: mysql.dockerfile
+    image: pmbs-mysql
+    # end of build the image
+    # use repository image
+    # image: mysql:latest
+    ports:
+      - '3307:3306'
+    volumes:
+      - './data:/var/lib/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+  
+  phpmyadmin:
+    # build the image
+    build:
+      context: .
+      dockerfile: phpmyadmin.dockerfile
+    image: pmbs-phpmyadmin
+    # end of build the image
+    # use repository image
+    # image: mysql:latest
+    ports:
+      - '8503:80'
+    environment:
+      PMA_HOST: php-mysql-phpadmin-mysql-1
+    links: 
+      - 'mysql'
+
+networks: 
+  pmbs:
+    name: pmbs-example
+    driver: bridge
